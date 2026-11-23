@@ -17,6 +17,7 @@
 namespace aiprovider_bedrock;
 
 use Aws\BedrockRuntime\BedrockRuntimeClient;
+use Aws\Credentials\CredentialProvider;
 use core\http_client;
 use core_ai\aiactions\responses\response_base;
 use core_ai\process_base;
@@ -39,17 +40,22 @@ abstract class abstract_processor extends process_base {
      */
     protected function get_bedrock_client(): BedrockRuntimeClient {
         $region = get_config('aiprovider_bedrock', 'region');
-        $accesskey = get_config('aiprovider_bedrock', 'accesskeyid');
-        $secretkey = get_config('aiprovider_bedrock', 'secretaccesskey');
 
-        return new BedrockRuntimeClient([
+        $config = [
             'version' => 'latest',
             'region' => $region,
-            'credentials' => [
-                'key' => $accesskey,
-                'secret' => $secretkey,
-            ],
-        ]);
+        ];
+
+        if (get_config('aiprovider_bedrock', 'useiamrole')) {
+            $config['credentials'] = CredentialProvider::instanceProfile();
+        } else {
+            $config['credentials'] = [
+                'key' => get_config('aiprovider_bedrock', 'accesskeyid'),
+                'secret' => get_config('aiprovider_bedrock', 'secretaccesskey'),
+            ];
+        }
+
+        return new BedrockRuntimeClient($config);
     }
 
     /**

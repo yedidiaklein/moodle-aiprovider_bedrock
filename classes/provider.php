@@ -34,6 +34,9 @@ class provider extends \core_ai\provider {
     /** @var string The AWS secret access key. */
     private string $secretaccesskey;
 
+    /** @var bool Whether to use the EC2 instance role for AWS credentials. */
+    private bool $useiamrole;
+
     /** @var string The AWS region. */
     private string $region;
 
@@ -54,6 +57,7 @@ class provider extends \core_ai\provider {
      */
     public function __construct() {
         // Get AWS credentials from config.
+        $this->useiamrole = get_config('aiprovider_bedrock', 'useiamrole');
         $this->accesskeyid = get_config('aiprovider_bedrock', 'accesskeyid');
         $this->secretaccesskey = get_config('aiprovider_bedrock', 'secretaccesskey');
         $this->region = get_config('aiprovider_bedrock', 'region');
@@ -204,6 +208,7 @@ class provider extends \core_ai\provider {
      * @return bool Return true if configured.
      */
     public function is_provider_configured(): bool {
-        return !empty($this->accesskeyid) && !empty($this->secretaccesskey) && !empty($this->region);
+        $hascredentials = $this->useiamrole || (!empty($this->accesskeyid) && !empty($this->secretaccesskey));
+        return $hascredentials && !empty($this->region);
     }
 }

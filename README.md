@@ -14,7 +14,9 @@ Amazon Bedrock offers significant advantages for European universities seeking t
 To install this AI provider you can download the ZIP file and install from *Administration > Site administration > Plugins > Install plugins*, or you can unzip it in the `ai/provider` folder.
 This provider requires Moodle LMS 4.5, the first version to include the AI subsystem.
 
-You must provide an AWS Access Key and Secret Access Key for an AWS user with the proper permissions to use Amazon Bedrock in your AWS account. Please remind to enable the models from *Bedrock configurations > Model access* in the selected region.
+By default, you must provide an AWS Access Key and Secret Access Key for an AWS user with the proper permissions to use Amazon Bedrock in your AWS account. Alternatively, enable **Use the EC2 instance IAM role** to authenticate with the role attached to the EC2 instance running Moodle. In this mode, the plugin retrieves credentials from the EC2 instance metadata service, so no access keys are needed. Ensure the role grants permission to invoke the configured Bedrock models, and that the EC2 instance can access its metadata service.
+
+Please remember to enable the models from *Bedrock configurations > Model access* in the selected region.
 
 You need to provide the AWS region and the [models](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html) to use for every specific Action.
 

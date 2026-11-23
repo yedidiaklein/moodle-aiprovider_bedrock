@@ -58,3 +58,5 @@ $string['secretaccesskey'] = 'AWS Secret Access Key';
 $string['secretaccesskey_desc'] = 'The AWS Secret Access Key used to authenticate with Amazon Bedrock.';
 $string['userratelimit'] = 'Maximum number of requests per user';
 $string['userratelimit_desc'] = 'The number of requests allowed per hour, per user.';
+$string['useiamrole'] = 'Use the EC2 instance IAM role';
+$string['useiamrole_desc'] = 'Use credentials from the IAM role attached to this EC2 instance instead of AWS access keys. Moodle must be running on EC2, and the role must allow invoking the configured Amazon Bedrock models.';

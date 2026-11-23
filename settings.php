@@ -41,6 +41,14 @@ if ($hassiteconfig) {
         '',
     ));
 
+    // Setting to use the EC2 instance role instead of static AWS credentials.
+    $settings->add(new admin_setting_configcheckbox(
+        'aiprovider_bedrock/useiamrole',
+        new lang_string('useiamrole', 'aiprovider_bedrock'),
+        new lang_string('useiamrole_desc', 'aiprovider_bedrock'),
+        0,
+    ));
+
     // Setting to store AWS access key ID.
     $settings->add(new admin_setting_configpasswordunmask(
         'aiprovider_bedrock/accesskeyid',
@@ -48,6 +56,7 @@ if ($hassiteconfig) {
         new lang_string('accesskeyid_desc', 'aiprovider_bedrock'),
         '',
     ));
+    $settings->hide_if('aiprovider_bedrock/accesskeyid', 'aiprovider_bedrock/useiamrole', 'eq', 1);
 
     // Setting to store AWS secret access key.
     $settings->add(new admin_setting_configpasswordunmask(
@@ -56,6 +65,7 @@ if ($hassiteconfig) {
         new lang_string('secretaccesskey_desc', 'aiprovider_bedrock'),
         '',
     ));
+    $settings->hide_if('aiprovider_bedrock/secretaccesskey', 'aiprovider_bedrock/useiamrole', 'eq', 1);
 
     // Setting to store AWS region.
     $settings->add(new admin_setting_configtext(
